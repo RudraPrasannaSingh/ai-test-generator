@@ -180,6 +180,14 @@ async def generate_tests(request: TestRequest):
         logger.error(f"❌ Generation failed: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# Add this at the end of app/main.py
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    import os
+    
+    # Use Render's PORT environment variable
+    port = int(os.environ.get("PORT", 8000))
+    
+    # CRITICAL: Must bind to 0.0.0.0 for Render
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
